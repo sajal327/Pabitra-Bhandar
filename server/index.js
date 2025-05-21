@@ -21,16 +21,26 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
+// const corsOptions = {
+//   origin: [
+//     process.env.FRONTEND_URL,
+//     "http://localhost:5173",
+//     "https://pabitra-bhandar-client.onrender.com",
+//   ],
+//   credentials: true,
+// };
+// CORS options
 const corsOptions = {
-  origin: [
-    process.env.FRONTEND_URL,
-    "http://localhost:5173",
-    "https://pabitra-bhandar-client.onrender.com",
-  ],
-  credentials: true,
+  origin: process.env.FRONTEND_URL, // Replace with your frontend URL
+  credentials: true, // This allows cookies to be sent across domains
+  optionsSuccessStatus: 200,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization", "x-csrf-token"],
+  preflightContinue: false,
 };
-
 app.use(cors(corsOptions));
+
+
 
 
 // const corsOptions = {
