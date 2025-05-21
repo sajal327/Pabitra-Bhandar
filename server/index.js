@@ -25,12 +25,24 @@ const corsOptions = {
   origin: [
     process.env.FRONTEND_URL,
     "http://localhost:5173",
-    "https://pabitra-bhandar-client.onrender.com", // your Render frontend URL
+    "https://pabitra-bhandar-client.onrender.com",
   ],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
+
+
+// const corsOptions = {
+//   origin: [
+//     process.env.FRONTEND_URL,
+//     "http://localhost:5173",
+//     "https://pabitra-bhandar-client.onrender.com", // your Render frontend URL
+//   ],
+//   credentials: true,
+// };
+
+// app.use(cors(corsOptions));
 
 // app.use(
 //   cors({
