@@ -1,0 +1,19 @@
+# dependencies
+node_modules/
+
+# env files
+.env
+.env.*
+
+# build output (if using TypeScript or Babel)
+dist/
+build/
+
+# logs and temp
+*.log
+temp/
+tmp/
+
+# misc
+.DS_Store
+.vscode/
