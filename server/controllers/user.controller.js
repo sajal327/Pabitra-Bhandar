@@ -157,11 +157,12 @@ export async function loginController(request, response) {
     //   secure: true,
     //   sameSite: "None",
     // };
-        const cookiesOption = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    const cookiesOption = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
     };
+    
     response.cookie("accessToken", accesstoken, cookiesOption);
     response.cookie("refreshToken", refreshToken, cookiesOption);
 
