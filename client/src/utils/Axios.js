@@ -1,10 +1,20 @@
+// Example: utils/Axios.js
 import axios from "axios";
-import SummaryApi , { baseURL } from "../common/SummaryApi";
 
 const Axios = axios.create({
-    baseURL : "https://pabitra-bhandar-server.onrender.com",
-    withCredentials : true
-})
+  baseURL: import.meta.env.VITE_API_URL, // This will now correctly pick up the env var
+  withCredentials: true, // This is CRUCIAL for sending cookies
+});
+
+export default Axios;
+
+// import axios from "axios";
+// import SummaryApi , { baseURL } from "../common/SummaryApi";
+
+// const Axios = axios.create({
+//     baseURL : "https://pabitra-bhandar-server.onrender.com",
+//     withCredentials : true
+// })
 
 // //sending access token in the header
 // Axios.interceptors.request.use(
@@ -68,4 +78,4 @@ const Axios = axios.create({
 //     }
 // }
 
-export default Axios
+// export default Axios
