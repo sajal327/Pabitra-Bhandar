@@ -72,7 +72,7 @@ const Login = () => {
 
         setTimeout(() => {
           navigate("/");
-        }, 600);
+        }, 200);
       }
     } catch (error) {
       AxiosToastError(error);
