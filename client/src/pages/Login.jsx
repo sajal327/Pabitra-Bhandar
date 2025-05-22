@@ -92,6 +92,7 @@ const Login = () => {
     try {
   const userDetails = await fetchUserDetails(accesstoken);
   dispatch(setUserDetails(userDetails.data));
+  dispatch(setAuth(true));
   navigate("/");
 } catch (err) {
   console.error("Error fetching user after login", err);
