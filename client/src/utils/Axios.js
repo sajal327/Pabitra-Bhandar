@@ -1,6 +1,8 @@
 // Example: utils/Axios.js
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 const Axios = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // This will now correctly pick up the env var
   withCredentials: true, // This is CRUCIAL for sending cookies
