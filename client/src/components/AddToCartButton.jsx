@@ -19,14 +19,13 @@ const AddToCartButton = ({ data }) => {
   const [cartItemDetails, setCartItemsDetails] = useState();
 
 
-const isLoggedIn = useSelector((state) => !!state.auth.accessToken);
+const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // ✅ correct selector
 const navigate = useNavigate();
 
 const handleADDTocart = async (e) => {
   e.preventDefault();
   e.stopPropagation();
 
-  // ✅ Check if user is logged in
   if (!isLoggedIn) {
     toast.error("Please login to add items to cart");
     navigate("/login");
@@ -48,7 +47,7 @@ const handleADDTocart = async (e) => {
     if (responseData.success) {
       toast.success(responseData.message);
       if (fetchCartItem) {
-        fetchCartItem(); // optional: refresh cart data
+        fetchCartItem();
       }
     }
   } catch (error) {
@@ -57,6 +56,7 @@ const handleADDTocart = async (e) => {
     setLoading(false);
   }
 };
+
 
 
   // const handleADDTocart = async (e) => {
