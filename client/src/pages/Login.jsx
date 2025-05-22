@@ -44,36 +44,67 @@ const Login = () => {
       }
 
       if (response.data.success) {
-        toast.success(response.data.message);
+  toast.success(response.data.message);
 
-        const { accesstoken, refreshToken } = response.data.data;
+  const { accesstoken, refreshToken } = response.data.data;
 
-        // ✅ Save auth to Redux
-        dispatch(
-          setAuth({
-            accessToken: accesstoken,
-            refreshToken: refreshToken,
-          })
-        );
+  // ✅ Save to Redux
+  dispatch(setAuth({
+    accessToken: accesstoken,
+    refreshToken: refreshToken,
+  }));
 
-        // ✅ Optionally store in localStorage for persistence
-        localStorage.setItem("accessToken", accesstoken);
-        localStorage.setItem("refreshToken", refreshToken);
+  // ✅ Optional: persist in localStorage
+  localStorage.setItem("accessToken", accesstoken);
+  localStorage.setItem("refreshToken", refreshToken);
 
-        // ✅ Get user details and save to Redux
-        const userDetails = await fetchUserDetails();
-        dispatch(setUserDetails(userDetails.data));
+  // ✅ Clear form data
+  setData({ email: "", password: "" });
 
-        // ✅ Navigate and reset
-        setData({
-          email: "",
-          password: "",
-        });
+  // ✅ Wait for browser to register cookies before fetching protected data
+  setTimeout(async () => {
+    try {
+      const userDetails = await fetchUserDetails();
+      dispatch(setUserDetails(userDetails.data));
+      navigate("/"); // ✅ Move navigation *after* successful fetch
+    } catch (err) {
+      console.error("Error fetching user after login", err);
+    }
+  }, 400); // You can try 200–500ms delay
+}
 
-        setTimeout(() => {
-          navigate("/");
-        }, 200);
-      }
+
+      // if (response.data.success) {
+      //   toast.success(response.data.message);
+
+      //   const { accesstoken, refreshToken } = response.data.data;
+
+      //   // ✅ Save auth to Redux
+      //   dispatch(
+      //     setAuth({
+      //       accessToken: accesstoken,
+      //       refreshToken: refreshToken,
+      //     })
+      //   );
+
+      //   // ✅ Optionally store in localStorage for persistence
+      //   localStorage.setItem("accessToken", accesstoken);
+      //   localStorage.setItem("refreshToken", refreshToken);
+
+      //   // ✅ Get user details and save to Redux
+      //   const userDetails = await fetchUserDetails();
+      //   dispatch(setUserDetails(userDetails.data));
+
+      //   // ✅ Navigate and reset
+      //   setData({
+      //     email: "",
+      //     password: "",
+      //   });
+
+      //   setTimeout(() => {
+      //     navigate("/");
+      //   }, 200);
+      // }
     } catch (error) {
       AxiosToastError(error);
     }
