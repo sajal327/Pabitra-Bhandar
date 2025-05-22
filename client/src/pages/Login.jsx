@@ -62,21 +62,33 @@ const Login = () => {
   setData({ email: "", password: "" });
 
   // ✅ Wait for browser to register cookies before fetching protected data
-setTimeout(async () => {
-  try {
-    const userDetails = await fetchUserDetails();
+// setTimeout(async () => {
+//   try {
+//     const userDetails = await fetchUserDetails();
 
-    if (!userDetails || !userDetails.data) {
-      throw new Error("No user data returned");
+//     if (!userDetails || !userDetails.data) {
+//       throw new Error("No user data returned");
+//     }
+
+//     dispatch(setUserDetails(userDetails.data));
+//     navigate("/");
+//   } catch (err) {
+//     console.error("Failed to fetch user after login:", err);
+//     toast.error("Failed to fetch user after login.");
+//   }
+// }, 600);
+        // Give browser time to register cookies
+  setTimeout(async () => {
+    try {
+      const userDetails = await fetchUserDetails(); // this uses cookies now
+      dispatch(setUserDetails(userDetails.data));
+      dispatch(setAuth(true));
+      navigate("/");
+    } catch (err) {
+      console.error("Error fetching user after login", err);
+      toast.error("Could not fetch user. Try refreshing.");
     }
-
-    dispatch(setUserDetails(userDetails.data));
-    navigate("/");
-  } catch (err) {
-    console.error("Failed to fetch user after login:", err);
-    toast.error("Failed to fetch user after login.");
-  }
-}, 600);
+  }, 800); // Try 600–800ms
 }
 
 
