@@ -156,6 +156,7 @@ export async function loginController(request, response) {
       httpOnly: true,
       secure: true,
       sameSite: "None",
+      path: "/",
     };
     // const cookiesOption = {
     // httpOnly: true,
