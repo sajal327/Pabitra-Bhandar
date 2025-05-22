@@ -62,15 +62,21 @@ const Login = () => {
   setData({ email: "", password: "" });
 
   // ✅ Wait for browser to register cookies before fetching protected data
-  setTimeout(async () => {
-    try {
-      const userDetails = await fetchUserDetails();
-      dispatch(setUserDetails(userDetails.data));
-      navigate("/"); // ✅ Move navigation *after* successful fetch
-    } catch (err) {
-      console.error("Error fetching user after login", err);
+setTimeout(async () => {
+  try {
+    const userDetails = await fetchUserDetails();
+
+    if (!userDetails || !userDetails.data) {
+      throw new Error("No user data returned");
     }
-  }, 400); // You can try 200–500ms delay
+
+    dispatch(setUserDetails(userDetails.data));
+    navigate("/");
+  } catch (err) {
+    console.error("Failed to fetch user after login:", err);
+    toast.error("Failed to fetch user after login.");
+  }
+}, 600);
 }
 
 
