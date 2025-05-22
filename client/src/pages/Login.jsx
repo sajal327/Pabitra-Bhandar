@@ -78,19 +78,18 @@ const Login = () => {
 //   }
 // }, 600);
         // Give browser time to register cookies
-//   setTimeout(async () => {
-//     try {
-//       const userDetails = await fetchUserDetails(); // this uses cookies now
-//       dispatch(setUserDetails(userDetails.data));
-//       dispatch(setAuth(true));
-//       navigate("/");
-//     } catch (err) {
-//       console.error("Error fetching user after login", err);
-//       toast.error("Could not fetch user. Try refreshing.");
-//     }
-//   }, 800); // Try 600–800ms
-// }
-try {
+  // setTimeout(async () => {
+  //   try {
+  //     const userDetails = await fetchUserDetails(); // this uses cookies now
+  //     dispatch(setUserDetails(userDetails.data));
+  //     dispatch(setAuth(true));
+  //     navigate("/");
+  //   } catch (err) {
+  //     console.error("Error fetching user after login", err);
+  //     toast.error("Could not fetch user. Try refreshing.");
+  //   }
+  // }, 800); 
+    try {
   const userDetails = await fetchUserDetails(accesstoken);
   dispatch(setUserDetails(userDetails.data));
   navigate("/");
@@ -98,6 +97,9 @@ try {
   console.error("Error fetching user after login", err);
   toast.error("Could not fetch user. Try refreshing.");
 }
+    
+}
+
 
 
       // if (response.data.success) {
