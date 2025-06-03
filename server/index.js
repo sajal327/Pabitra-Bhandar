@@ -17,7 +17,7 @@ import addressRouter from "./route/address.route.js";
 import orderRouter from "./route/order.route.js";
 
 const app = express();
-
+app.set('trust proxy', 1);
 // Connect to MongoDB
 connectDB();
 
