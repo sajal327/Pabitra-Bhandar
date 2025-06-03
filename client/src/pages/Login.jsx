@@ -240,7 +240,7 @@ const Login = () => {
         console.log("Using token:", localStorage.getItem("accessToken"));
 
         const userDetails = await fetchUserDetails();
-        dispatch(setUserDetails(userDetails.data));
+        dispatch(setUserDetails(userDetails.data.data));
 
         setTimeout(() => {
           navigate("/");
