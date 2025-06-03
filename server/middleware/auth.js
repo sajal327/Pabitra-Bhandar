@@ -1,46 +1,67 @@
 import jwt from "jsonwebtoken";
-
-const auth = async (request, response, next) => {
+const auth = async (req, res, next) => {
   try {
-    let token = null;
+    const token = req.cookies.accessToken;
 
-    // Check for token in cookie
-    if (request.cookies && request.cookies.accessToken) {
-      token = request.cookies.accessToken;
-    }
-
-    // Else check in headers
-    else if (
-      request.headers.authorization &&
-      request.headers.authorization.startsWith("Bearer ")
-    ) {
-      token = request.headers.authorization.split(" ")[1];
-    }
-
-    // No token found
     if (!token) {
-      return response.status(401).json({
-        message: "Please Login",
-        error: true,
-        success: false,
-      });
+      return res.status(401).json({ message: "Please login", success: false });
     }
 
     const decoded = jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
-
-    request.userId = decoded.id;
+    req.userId = decoded.id;
 
     next();
-  } catch (error) {
-    return response.status(401).json({
-      message: "Unauthorized or invalid token",
-      error: true,
-      success: false,
-    });
+  } catch (err) {
+    res
+      .status(401)
+      .json({ message: "Unauthorized or invalid token", success: false });
   }
 };
-
 export default auth;
+
+// import jwt from "jsonwebtoken";
+
+// const auth = async (request, response, next) => {
+//   try {
+//     let token = null;
+
+//     // Check for token in cookie
+//     if (request.cookies && request.cookies.accessToken) {
+//       token = request.cookies.accessToken;
+//     }
+
+//     // Else check in headers
+//     else if (
+//       request.headers.authorization &&
+//       request.headers.authorization.startsWith("Bearer ")
+//     ) {
+//       token = request.headers.authorization.split(" ")[1];
+//     }
+
+//     // No token found
+//     if (!token) {
+//       return response.status(401).json({
+//         message: "Please Login",
+//         error: true,
+//         success: false,
+//       });
+//     }
+
+//     const decoded = jwt.verify(token, process.env.SECRET_KEY_ACCESS_TOKEN);
+
+//     request.userId = decoded.id;
+
+//     next();
+//   } catch (error) {
+//     return response.status(401).json({
+//       message: "Unauthorized or invalid token",
+//       error: true,
+//       success: false,
+//     });
+//   }
+// };
+
+// export default auth;
 
 // import jwt from "jsonwebtoken";
 
