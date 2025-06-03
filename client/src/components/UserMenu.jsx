@@ -15,44 +15,44 @@ const UserMenu = ({ close }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+//   const handleLogout = async () => {
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+
+//   try {
+//     const response = await Axios({
+//       ...SummaryApi.logout,
+//     });
+
+//     if (response.data.success) {
+//       dispatch(logout()); // ✅ CLEAR redux state & localStorage
+//       toast.success(response.data.message);
+//       navigate("/"); // redirect to home or login
+//     }
+//   } catch (error) {
+//     AxiosToastError(error);
+//   }
+// };
   const handleLogout = async () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  try {
-    const response = await Axios({
-      ...SummaryApi.logout,
-    });
-
-    if (response.data.success) {
-      dispatch(logout()); // ✅ CLEAR redux state & localStorage
-      toast.success(response.data.message);
-      navigate("/"); // redirect to home or login
+    try {
+      const response = await Axios({
+        ...SummaryApi.logout,
+      });
+      console.log("logout", response);
+      if (response.data.success) {
+        if (close) {
+          close();
+        }
+        dispatch(logout());
+        localStorage.clear();
+        toast.success(response.data.message);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+      AxiosToastError(error);
     }
-  } catch (error) {
-    AxiosToastError(error);
-  }
-};
-  // const handleLogout = async () => {
-  //   try {
-  //     const response = await Axios({
-  //       ...SummaryApi.logout,
-  //     });
-  //     console.log("logout", response);
-  //     if (response.data.success) {
-  //       if (close) {
-  //         close();
-  //       }
-  //       dispatch(logout());
-  //       localStorage.clear();
-  //       toast.success(response.data.message);
-  //       navigate("/");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     AxiosToastError(error);
-  //   }
-  // };
+  };
 
   const handleClose = () => {
     if (close) {
