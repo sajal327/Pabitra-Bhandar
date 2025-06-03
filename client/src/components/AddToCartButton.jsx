@@ -19,74 +19,74 @@ const AddToCartButton = ({ data }) => {
   const [cartItemDetails, setCartItemsDetails] = useState();
 
 
-const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // ✅ correct selector
+const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 const navigate = useNavigate();
 
-const handleADDTocart = async (e) => {
-  e.preventDefault();
-  e.stopPropagation();
+// const handleADDTocart = async (e) => {
+//   e.preventDefault();
+//   e.stopPropagation();
 
-  if (!isLoggedIn) {
-    toast.error("Please login to add items to cart");
-    navigate("/login");
-    return;
-  }
+//   if (!isLoggedIn) {
+//     toast.error("Please login to add items to cart");
+//     navigate("/login");
+//     return;
+//   }
 
-  try {
-    setLoading(true);
+//   try {
+//     setLoading(true);
 
-    const response = await Axios({
-      ...SummaryApi.addTocart,
-      data: {
-        productId: data?._id,
-      },
-    });
+//     const response = await Axios({
+//       ...SummaryApi.addTocart,
+//       data: {
+//         productId: data?._id,
+//       },
+//     });
 
-    const { data: responseData } = response;
+//     const { data: responseData } = response;
 
-    if (responseData.success) {
-      toast.success(responseData.message);
-      if (fetchCartItem) {
-        fetchCartItem();
+//     if (responseData.success) {
+//       toast.success(responseData.message);
+//       if (fetchCartItem) {
+//         fetchCartItem();
+//       }
+//     }
+//   } catch (error) {
+//     AxiosToastError(error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+
+
+  const handleADDTocart = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      setLoading(true);
+
+      const response = await Axios({
+        ...SummaryApi.addTocart,
+        data: {
+          productId: data?._id,
+        },
+      });
+
+      const { data: responseData } = response;
+
+      if (responseData.success) {
+        toast.success(responseData.message);
+        if (fetchCartItem) {
+          fetchCartItem();
+        }
       }
+    } catch (error) {
+      AxiosToastError(error);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    AxiosToastError(error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
-
-  // const handleADDTocart = async (e) => {
-  //   e.preventDefault();
-  //   e.stopPropagation();
-
-  //   try {
-  //     setLoading(true);
-
-  //     const response = await Axios({
-  //       ...SummaryApi.addTocart,
-  //       data: {
-  //         productId: data?._id,
-  //       },
-  //     });
-
-  //     const { data: responseData } = response;
-
-  //     if (responseData.success) {
-  //       toast.success(responseData.message);
-  //       if (fetchCartItem) {
-  //         fetchCartItem();
-  //       }
-  //     }
-  //   } catch (error) {
-  //     AxiosToastError(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  };
 
   //checking this item in cart or not
   useEffect(() => {
