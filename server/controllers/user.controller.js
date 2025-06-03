@@ -152,22 +152,33 @@ export async function loginController(request, response) {
       last_login_date: new Date(),
     });
 
+    // const cookiesOption = {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "None",
+    //   path: "/",
+    // };
+    // const cookiesOption = {
+    // httpOnly: true,
+    // secure: process.env.NODE_ENV === "production",
+    // sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    // };
+    // const cookiesOption = {
+    // httpOnly: true,
+    // secure: process.env.NODE_ENV === "production",
+    // sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    // };
+
+    const isProd = process.env.NODE_ENV === "production";
+
     const cookiesOption = {
-      httpOnly: true,
-      secure: true,
-      sameSite: "None",
-      path: "/",
+    httpOnly: true,
+    secure: isProd,        
+    sameSite: isProd ? "None" : "Lax",
+    path: "/",
+    expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     };
-    // const cookiesOption = {
-    // httpOnly: true,
-    // secure: process.env.NODE_ENV === "production",
-    // sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    // };
-    // const cookiesOption = {
-    // httpOnly: true,
-    // secure: process.env.NODE_ENV === "production",
-    // sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-    // };
+
     
     response.cookie("accessToken", accesstoken, cookiesOption);
     response.cookie("refreshToken", refreshToken, cookiesOption);
