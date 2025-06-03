@@ -212,50 +212,97 @@ const Login = () => {
 
   const valideValue = Object.values(data).every((el) => el);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
 
-    try {
-      const response = await Axios({
-        ...SummaryApi.login,
-        data: data,
-      });
+  //   try {
+  //     const response = await Axios({
+  //       ...SummaryApi.login,
+  //       data: data,
+  //     });
 
-      if (response.data.error) {
-        toast.error(response.data.message);
-      }
+  //     if (response.data.error) {
+  //       toast.error(response.data.message);
+  //     }
 
-      if (response.data.success) {
-        toast.success(response.data.message);
-        // const accessToken = response.data.data.accesstoken;
-        // if (accessToken) {
-        //   localStorage.setItem("accessToken", accessToken); // ✅ proper key
-        //   localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        // } else {
-        //   console.warn("No access token received in login response");
-        // }
-        console.log("Login response:", response.data); // check structure
-        localStorage.setItem("accessToken", response.data.data.accesstoken);
-        localStorage.setItem("refreshToken", response.data.data.refreshToken);
-        console.log("Using token:", localStorage.getItem("accessToken"));
+  //     if (response.data.success) {
+  //       toast.success(response.data.message);
+  //       // const accessToken = response.data.data.accesstoken;
+  //       // if (accessToken) {
+  //       //   localStorage.setItem("accessToken", accessToken); // ✅ proper key
+  //       //   localStorage.setItem("refreshToken", response.data.data.refreshToken);
+  //       // } else {
+  //       //   console.warn("No access token received in login response");
+  //       // }
+  //       console.log("Login response:", response.data); // check structure
+  //       localStorage.setItem("accessToken", response.data.data.accesstoken);
+  //       localStorage.setItem("refreshToken", response.data.data.refreshToken);
+  //       console.log("Using token:", localStorage.getItem("accessToken"));
 
-        const userDetails = await fetchUserDetails();
-        dispatch(setUserDetails(userDetails.data.data));
+  //       const userDetails = await fetchUserDetails();
+  //       dispatch(setUserDetails(userDetails.data));
+  //       console.log("UserDetails:", userDetails);
 
-        setTimeout(() => {
-          navigate("/");
-        }, 600);
+  //       setTimeout(() => {
+  //         navigate("/");
+  //       }, 600);
 
-        setData({
-          email: "",
-          password: "",
-        });
-        navigate("/");
-      }
-    } catch (error) {
-      AxiosToastError(error);
+  //       setData({
+  //         email: "",
+  //         password: "",
+  //       });
+  //       navigate("/");
+  //     }
+  //   } catch (error) {
+  //     AxiosToastError(error);
+  //   }
+  // };
+
+       const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await Axios({
+      ...SummaryApi.login,
+      data: data,
+    });
+
+    if (response.data.error) {
+      toast.error(response.data.message);
+      return;
     }
-  };
+
+    if (response.data.success) {
+      toast.success(response.data.message);
+      console.log("Login response:", response.data);
+
+      setTimeout(async () => {
+        try {
+          const userDetails = await fetchUserDetails();
+
+          if (userDetails?.data) {
+            dispatch(setUserDetails(userDetails.data));
+            console.log("UserDetails:", userDetails);
+            navigate("/");
+          } else {
+            console.warn("User details missing from response");
+          }
+
+          setData({
+            email: "",
+            password: "",
+          });
+        } catch (err) {
+          console.error("Error fetching user after login", err);
+        }
+      }, 500);
+    }
+  } catch (error) {
+    AxiosToastError(error);
+  }
+};
+
+       
   return (
     <section className="w-full container mx-auto px-2">
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
