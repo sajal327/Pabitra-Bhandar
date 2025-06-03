@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import fetchUserDetails from "../utils/fetchUserDetails";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "../store/userSlice";
-import { setAuth } from "../store/authSlice"; // ✅ Add this import
+import { setAuth } from "../store/authSlice";
 
 const Login = () => {
   const [data, setData] = useState({
@@ -44,63 +44,34 @@ const Login = () => {
       }
 
       if (response.data.success) {
-  toast.success(response.data.message);
+        toast.success(response.data.message);
 
-  const { accesstoken, refreshToken } = response.data.data;
+        const { accesstoken, refreshToken } = response.data.data;
 
-  // ✅ Save to Redux
-  dispatch(setAuth({
-    accessToken: accesstoken,
-    refreshToken: refreshToken,
-  }));
+       
+        dispatch(
+          setAuth({
+            accessToken: accesstoken,
+            refreshToken: refreshToken,
+          })
+        );
 
-  // ✅ Optional: persist in localStorage
-  localStorage.setItem("accessToken", accesstoken);
-  localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("accessToken", accesstoken);
+        localStorage.setItem("refreshToken", refreshToken);
 
-  // ✅ Clear form data
-  setData({ email: "", password: "" });
+        setData({ email: "", password: "" });
 
-  // ✅ Wait for browser to register cookies before fetching protected data
-// setTimeout(async () => {
-//   try {
-//     const userDetails = await fetchUserDetails();
-
-//     if (!userDetails || !userDetails.data) {
-//       throw new Error("No user data returned");
-//     }
-
-//     dispatch(setUserDetails(userDetails.data));
-//     navigate("/");
-//   } catch (err) {
-//     console.error("Failed to fetch user after login:", err);
-//     toast.error("Failed to fetch user after login.");
-//   }
-// }, 600);
-        // Give browser time to register cookies
-  // setTimeout(async () => {
-  //   try {
-  //     const userDetails = await fetchUserDetails(); // this uses cookies now
-  //     dispatch(setUserDetails(userDetails.data));
-  //     dispatch(setAuth(true));
-  //     navigate("/");
-  //   } catch (err) {
-  //     console.error("Error fetching user after login", err);
-  //     toast.error("Could not fetch user. Try refreshing.");
-  //   }
-  // }, 800); 
-    try {
-  const userDetails = await fetchUserDetails(accesstoken);
-  dispatch(setUserDetails(userDetails.data));
-  navigate("/");
-} catch (err) {
-  console.error("Error fetching user after login", err);
-  toast.error("Could not fetch user. Try refreshing.");
-}
-    
-}
-
-
+        
+        setTimeout(async () => {
+          try {
+            const userDetails = await fetchUserDetails();
+            dispatch(setUserDetails(userDetails.data));
+            navigate("/"); 
+          } catch (err) {
+            console.error("Error fetching user after login", err);
+          }
+        }, 400);
+      }
 
       // if (response.data.success) {
       //   toast.success(response.data.message);
@@ -131,7 +102,7 @@ const Login = () => {
 
       //   setTimeout(() => {
       //     navigate("/");
-      //   }, 200);
+      //   }, 10);
       // }
     } catch (error) {
       AxiosToastError(error);
