@@ -55,8 +55,8 @@ const Login = () => {
   }));
 
   // ✅ Optional: persist in localStorage
-  // localStorage.setItem("accessToken", accesstoken);
-  // localStorage.setItem("refreshToken", refreshToken);
+  localStorage.setItem("accessToken", accesstoken);
+  localStorage.setItem("refreshToken", refreshToken);
 
   // ✅ Clear form data
   setData({ email: "", password: "" });
