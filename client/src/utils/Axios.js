@@ -1,14 +1,23 @@
-// Example: utils/Axios.js
 import axios from "axios";
-
-axios.defaults.withCredentials = true;
-
 const Axios = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // This will now correctly pick up the env var
-  withCredentials: true, // This is CRUCIAL for sending cookies
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
 });
-
 export default Axios;
+
+
+
+// Example: utils/Axios.js
+// import axios from "axios";
+
+// axios.defaults.withCredentials = true;
+
+// const Axios = axios.create({
+//   baseURL: import.meta.env.VITE_API_URL, // This will now correctly pick up the env var
+//   withCredentials: true, // This is CRUCIAL for sending cookies
+// });
+
+// export default Axios;
 
 // import axios from "axios";
 // import SummaryApi , { baseURL } from "../common/SummaryApi";
