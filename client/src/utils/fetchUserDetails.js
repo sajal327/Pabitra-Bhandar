@@ -1,26 +1,45 @@
 // utils/fetchUserDetails.js
 
+// import Axios from "./Axios";
+// import SummaryApi from "../common/SummaryApi";
+
+// const fetchUserDetails = async () => {
+//   try {
+//     const response = await Axios({
+//       ...SummaryApi.userDetails,
+//       withCredentials: true,
+//     });
+
+//     return response.data;
+//   } catch (error) {
+//     console.log("Error fetching user details:", error.response?.data || error);
+//     throw error;
+//   }
+// };
+
+// export default fetchUserDetails;
+// last 
 import Axios from "./Axios";
 import SummaryApi from "../common/SummaryApi";
+import { store } from "../store/store";
 
-const fetchUserDetails = async () => {
+const fetchUserDetails = async (manualToken = null) => {
   try {
+    const token = manualToken || store.getState().auth.accessToken;
+
     const response = await Axios({
       ...SummaryApi.userDetails,
-      withCredentials: true,
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
 
     return response.data;
   } catch (error) {
-    console.log("Error fetching user details:", error.response?.data || error);
-    throw error;
+    console.error("Error fetching user details:", error);
   }
 };
 
 export default fetchUserDetails;
 
-
-//last 
 // import Axios from "./Axios";
 // import SummaryApi from "../common/SummaryApi";
 
