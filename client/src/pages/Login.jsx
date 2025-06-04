@@ -206,7 +206,7 @@ const Login = () => {
 
   const validInput = Object.values(data).every((el) => el.trim() !== "");
 
-  const handleSubmit = async (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -223,13 +223,24 @@ const Login = () => {
       if (response.data.success) {
         toast.success(response.data.message);
 
-        // Small delay to allow cookies to be set
+        const accessToken = response.data.accessToken;
+        if (accessToken) {
+          dispatch(setAccessToken(accessToken));
+        }
+
         setTimeout(async () => {
           try {
-            const userDetails = await fetchUserDetails();
+            const userDetails = await fetchUserDetails(accessToken);
+
+            // if (response.data.success) {
+            //   toast.success(response.data.message);
+
+            //   setTimeout(async () => {
+            //     try {
+            //       const userDetails = await fetchUserDetails();
 
             if (userDetails?.data) {
-              dispatch(setUser(userDetails.data)); // ✅ This is where we store only the user
+              dispatch(setUser(userDetails.data));
               console.log("UserDetails:", userDetails);
               navigate("/");
             } else {
