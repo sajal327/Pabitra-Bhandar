@@ -219,43 +219,50 @@ const Login = () => {
         toast.error(response.data.message);
         return;
       }
+       if (response.data.success) {
+       toast.success(response.data.message);
+       console.log("Login response:", response.data);
 
-      if (response.data.success) {
-        toast.success(response.data.message);
-        console.log("Login response:", response.data);
+     try {
+       const userDetails = await fetchUserDetails();
 
-        // const accessToken = response.data.accessToken;
-        const accessToken = response.data.data.accesstoken;
-             console.log("Access Token: ", accessToken);
-        if (accessToken) {
-          dispatch(setAccessToken(accessToken));
-        }
+       if (userDetails?.data) {
+      dispatch(setUser(userDetails.data));
+      console.log("UserDetails:", userDetails);
+      navigate("/");
+     } else {
+       console.warn("User details missing from response");
+     }
 
-        setTimeout(async () => {
-          try {
-            const userDetails = await fetchUserDetails(accessToken);
+     setData({ email: "", password: "" });
+     } catch (err) {
+     console.error("Error fetching user after login", err);
+     }
+    }
+           
+      //       if (response.data.success) {
+      //         toast.success(response.data.message);
+      //         console.log("Login response:", response.data);
+      //         console.log("Access Token: ", accessToken);
 
-            // if (response.data.success) {
-            //   toast.success(response.data.message);
+      //         setTimeout(async () => {
+      //           try {
+      //             const userDetails = await fetchUserDetails();
 
-            //   setTimeout(async () => {
-            //     try {
-            //       const userDetails = await fetchUserDetails();
+      //       if (userDetails?.data) {
+      //         dispatch(setUser(userDetails.data));
+      //         console.log("UserDetails:", userDetails);
+      //         navigate("/");
+      //       } else {
+      //         console.warn("User details missing from response");
+      //       }
 
-            if (userDetails?.data) {
-              dispatch(setUser(userDetails.data));
-              console.log("UserDetails:", userDetails);
-              navigate("/");
-            } else {
-              console.warn("User details missing from response");
-            }
-
-            setData({ email: "", password: "" });
-          } catch (err) {
-            console.error("Error fetching user after login", err);
-          }
-        }, 500);
-      }
+      //       setData({ email: "", password: "" });
+      //     } catch (err) {
+      //       console.error("Error fetching user after login", err);
+      //     }
+      //   }, 500);
+      // }
     } catch (error) {
       AxiosToastError(error);
     }
