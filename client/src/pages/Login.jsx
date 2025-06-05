@@ -222,9 +222,11 @@ const Login = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
+        console.log("Login response:", response.data);
 
         // const accessToken = response.data.accessToken;
         const accessToken = response.data.data.accesstoken;
+             console.log("Access Token: ", accessToken);
         if (accessToken) {
           dispatch(setAccessToken(accessToken));
         }
