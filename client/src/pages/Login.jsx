@@ -191,7 +191,7 @@ import AxiosToastError from "../utils/AxiosToastError";
 import { Link, useNavigate } from "react-router-dom";
 import fetchUserDetails from "../utils/fetchUserDetails";
 import { useDispatch } from "react-redux";
-import { setUser } from "../store/authSlice"; // ✅ Updated import
+import { setUser } from "../store/authSlice"; 
 
 const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
@@ -223,7 +223,8 @@ const Login = () => {
       if (response.data.success) {
         toast.success(response.data.message);
 
-        const accessToken = response.data.accessToken;
+        // const accessToken = response.data.accessToken;
+        const accessToken = response.data.data.accesstoken;
         if (accessToken) {
           dispatch(setAccessToken(accessToken));
         }
